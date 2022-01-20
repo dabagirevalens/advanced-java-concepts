@@ -5,7 +5,7 @@ enum Color{
     GREEN("green"),
     BLUE("blue");
 
-    public String value;
+    public final String value;
 
     Color(String value){
         this.value = value;
@@ -17,7 +17,7 @@ enum Color{
 }
 
 public class Enum {
-    public static void main(String args[]) throws Exception{
+    public static void main(String[] args){
         Color cl = Color.RED;
 
         System.out.println("Red enum value : " + cl.getValue());
