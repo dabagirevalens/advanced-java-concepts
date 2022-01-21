@@ -8,51 +8,45 @@ public class Server
 
     public static void main(String[] args)
     {
+
+        final  String green_bg = "\u001B[42m";
+        final String ANSI_RESET = "\u001B[0m";
 //        Server server = new Server(5000);
 
         try{
             ServerSocket serverSocket = new ServerSocket(5000);
-
             System.out.println("Server started");
-
             System.out.println("Waiting for a client ...");
 
             Socket socket = serverSocket.accept();
             System.out.println("client connected ... ");
 
 //          accept input from client
-            DataInputStream fromClient = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-
+            DataInputStream fromClient = new DataInputStream(socket.getInputStream());
             DataOutputStream outToClient = new DataOutputStream(socket.getOutputStream());
-            DataInputStream input = new DataInputStream(System.in);
+            BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 
-            String line = " ";
+            String msgFromClient = "", msgToClient;
 
-            while (!line.equals("over")){
+            while (!msgFromClient.equals("over")){
                 try{
-                    line = fromClient.readUTF();
-                    System.out.println("New msg : " + line);
+                    //read msg from client
+                    msgFromClient = fromClient.readUTF();
+                    System.out.println(green_bg + "New msg : " + msgFromClient + ANSI_RESET);
+
+                    //send response to client
+                    msgToClient = input.readLine();
+                    outToClient.writeUTF(msgToClient);
+                    outToClient.flush();
                 }catch (Exception e){
                     System.out.println("receiving msg failed : " + e);
                 }
             }
 
-            String msg = " ";
 
-            while (!msg.equals("end")){
-                try {
-                    msg = input.readLine();
-                    outToClient.writeUTF(msg);
-                }catch (Exception e){
-                    System.out.println("something went wrong ..."+ e.getMessage());
-                }
-            }
-
-            outToClient.writeUTF("hello this is server");
-
-            socket.close();
             fromClient.close();
-            outToClient.close();
+            socket.close();
+            serverSocket.close();
 
         }catch (Exception e){
             System.out.println("..." +e);

@@ -7,47 +7,38 @@ import java.net.Socket;
 public class Client {
     public static void main(String[] args)
     {
+        final  String green_bg = "\u001B[42m";
+        final String ANSI_RESET = "\u001B[0m";
         try {
 
-            Socket socket = new Socket("127.0.0.1", 5000);
+            Socket socket = new Socket("localhost", 5000);
             System.out.println("Connected to server ...");
 
-            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-            DataInputStream input = new DataInputStream(System.in);
-
             DataInputStream fromServer = new DataInputStream(socket.getInputStream());
+            DataOutputStream toServer = new DataOutputStream(socket.getOutputStream());
+            BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 
-            String line = " ";
+            String msgToServer = " ", msgFromServer;
 
-            while (!line.equals("over")){
+            while (!msgToServer.equals("over")){
                 try {
-                    line = input.readLine();
-                    out.writeUTF(line);
+
+                    //send msg
+                    msgToServer = input.readLine();
+                    toServer.writeUTF(msgToServer);
+                    toServer.flush();
+
+                    //read response
+                    msgFromServer = fromServer.readUTF();
+                    System.out.println(green_bg + "New reply : " + msgFromServer + ANSI_RESET);
+
                 }catch (Exception e){
                     System.out.println("something went wrong ..."+ e.getMessage());
                 }
             }
 
-            // get response from client
-            String msg = " ";
-
-            while (!msg.equals("end")){
-                try{
-                    msg = fromServer.readUTF();
-                    System.out.println("New res : " + msg);
-                }catch (Exception e){
-                    System.out.println("receiving res failed : " + e);
-                }
-            }
-
-
-            try{
-                socket.close();
-                out.close();
-                input.close();
-            }catch (Exception e){
-                System.out.println("Failed ... "+ e.getMessage());
-            }
+            toServer.close();
+            socket.close();
 
         }catch (Exception e){
             System.out.println(".. " + e);
