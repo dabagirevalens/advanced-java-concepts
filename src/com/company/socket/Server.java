@@ -9,8 +9,9 @@ public class Server
     public static void main(String[] args)
     {
 
-        final  String green_bg = "\u001B[42m";
+        final  String white_bg = "\u001B[47m";
         final String ANSI_RESET = "\u001B[0m";
+        final String black_color ="\u001B[30m";
 //        Server server = new Server(5000);
 
         try{
@@ -32,7 +33,7 @@ public class Server
                 try{
                     //read msg from client
                     msgFromClient = fromClient.readUTF();
-                    System.out.println(green_bg + "New msg : " + msgFromClient + ANSI_RESET);
+                    System.out.println(white_bg + black_color + "New msg : " + msgFromClient + ANSI_RESET);
 
                     //send response to client
                     msgToClient = input.readLine();

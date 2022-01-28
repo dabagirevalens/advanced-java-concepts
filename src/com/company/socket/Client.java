@@ -7,8 +7,9 @@ import java.net.Socket;
 public class Client {
     public static void main(String[] args)
     {
-        final  String green_bg = "\u001B[42m";
+        final  String white_bg = "\u001B[47m";
         final String ANSI_RESET = "\u001B[0m";
+        final String black_color ="\u001B[30m";
         try {
 
             Socket socket = new Socket("localhost", 5000);
@@ -30,7 +31,7 @@ public class Client {
 
                     //read response
                     msgFromServer = fromServer.readUTF();
-                    System.out.println(green_bg + "New reply : " + msgFromServer + ANSI_RESET);
+                    System.out.println(white_bg + black_color + "New reply : " + msgFromServer + ANSI_RESET);
 
                 }catch (Exception e){
                     System.out.println("something went wrong ..."+ e.getMessage());
