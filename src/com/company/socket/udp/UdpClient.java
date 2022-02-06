@@ -23,7 +23,7 @@ public class UdpClient {
             DatagramPacket response = new DatagramPacket(buffer, buffer.length, ip, 7000);
             ds.receive(response);
 
-            String serverResponse = new String(response.getData());
+            String serverResponse = new String(buffer, 0, response.getLength());
 
             System.out.println("server response : "+ serverResponse);
 
