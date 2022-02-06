@@ -19,38 +19,38 @@ public class JSoupFindLinksDemo {
 
         String folderName = newUrl.getHost();
         folderName = folderName.split("\\.", 3)[0];
-        String path = "C:\\Users\\dabagire\\IdeaProjects\\advanced-java\\src\\com\\company\\urldemo\\"+folderName;
+        String path = "C:\\Users\\dabagire\\IdeaProjects\\advanced-java\\src\\com\\company\\urldemo\\" + folderName;
 
         File folder = new File(path);
-        if(!folder.exists()){
+        if (!folder.exists()) {
             folder.mkdir();
         }
 
         for (String link : findLinks(url)) {
-           if(!link.contains("https://") && !link.contains("http://") && !link.contains("#")){
-               URL linkUrl = new URL(url+link);
-               URLConnection linkConn = linkUrl.openConnection();
+            if (!link.contains("https://") && !link.contains("http://") && !link.contains("#")) {
+                URL linkUrl = new URL(url + link);
+                URLConnection linkConn = linkUrl.openConnection();
 
-               //read page content
-               BufferedReader reader = new BufferedReader(new InputStreamReader(linkConn.getInputStream()));
+                //read page content
+                BufferedReader reader = new BufferedReader(new InputStreamReader(linkConn.getInputStream()));
 
-               //create a new file to store the page content
-               String fileName = linkUrl.getPath().split("/", 3)[1];
-               File my_file = new File(path+fileName);
-               if(!my_file.exists()){
-                   my_file.createNewFile();
-               }
+                //create a new file to store the page content
+                String fileName = "/" + linkUrl.getPath().split("/", 5)[1] + ".html";
+                File my_file = new File("C:\\Users\\dabagire\\IdeaProjects\\advanced-java\\src\\com\\company\\urldemo\\" + folderName + fileName);
+                if (!my_file.exists()) {
+                    my_file.createNewFile();
+                }
 
-               FileWriter myFile = new FileWriter(my_file);
+                FileWriter myFile = new FileWriter(my_file);
 
-               String line;
+                String line;
 
-               while ((line = reader.readLine()) != null) {
-                   myFile.write(line);
-               }
+                while ((line = reader.readLine()) != null) {
+                    myFile.write(line);
+                }
 
-               myFile.close();
-           }
+                myFile.close();
+            }
         }
 
     }
